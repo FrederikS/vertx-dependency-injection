@@ -7,15 +7,19 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.reactivex.core.eventbus.Message;
 
+import java.util.UUID;
+
 import static io.vertx.di.foo.FooVerticle.FOO_SERVICE_ADDRESS;
 
 public class MainVerticle extends AbstractVerticle {
 
     @Override
     public void start(Future<Void> startFuture) {
-        JsonObject createMessage = new JsonObject().put("bar", "foobar");
+        JsonObject fooMessage = new JsonObject()
+                .put("id", UUID.randomUUID().toString())
+                .put("bar", "foobar");
 
-        vertx.eventBus().<JsonObject>rxSend(FOO_SERVICE_ADDRESS, createMessage, action("create"))
+        vertx.eventBus().<JsonObject>rxSend(FOO_SERVICE_ADDRESS, fooMessage, action("save"))
                 .map(Message::body)
                 .doOnSuccess(foo -> System.out.println("Saved: " + foo))
                 .map(foo -> new JsonObject().put("id", foo.getString("id")))

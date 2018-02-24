@@ -23,4 +23,5 @@ class InMemoryFooRepository implements FooRepository {
                 .just(store.get(id))
                 .filter(Objects::nonNull);
     }
+
 }

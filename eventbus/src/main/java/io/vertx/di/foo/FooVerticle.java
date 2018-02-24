@@ -12,28 +12,28 @@ public class FooVerticle extends AbstractVerticle {
 
     public static final String FOO_SERVICE_ADDRESS = "foo-service";
 
-    private FooService fooService;
+    private FooRepository fooRepository;
     private MessageConsumer<JsonObject> consumer;
 
     @Override
     public void init(Vertx vertx, Context context) {
         super.init(vertx, context);
-        fooService = new FooService(new InMemoryFooRepository());
+        fooRepository = new InMemoryFooRepository();
     }
 
     @Override
     public void start(Future<Void> startFuture) {
         consumer = vertx.eventBus().consumer(FOO_SERVICE_ADDRESS, message -> {
             switch (message.headers().get("action")) {
-                case "create":
-                    fooService
-                            .createFoo(message.body().getString("bar"))
+                case "save":
+                    fooRepository
+                            .save(message.body().mapTo(Foo.class))
                             .map(JsonObject::mapFrom)
                             .subscribe(message::reply, e -> message.fail(500, e.getMessage()));
                     break;
                 case "find":
-                    fooService
-                            .findFoo(message.body().getString("id"))
+                    fooRepository
+                            .findById(message.body().getString("id"))
                             .switchIfEmpty(Single.error(new RuntimeException("Foo not found.")))
                             .map(JsonObject::mapFrom)
                             .subscribe(message::reply, e -> message.fail(404, e.getMessage()));

@@ -4,30 +4,37 @@ import io.reactivex.Single;
 import io.vertx.core.Context;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.di.foo.FooVerticle;
-import io.vertx.di.foo.reactivex.FooService;
+import io.vertx.di.foo.reactivex.FooRepository;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.serviceproxy.ServiceProxyBuilder;
+
+import java.util.UUID;
 
 
 public class MainVerticle extends AbstractVerticle {
 
-    private FooService fooService;
+    private FooRepository fooRepository;
 
     @Override
     public void init(Vertx vertx, Context context) {
         super.init(vertx, context);
-        fooService = new FooService(new ServiceProxyBuilder(vertx)
+        fooRepository = new FooRepository(new ServiceProxyBuilder(vertx)
                 .setAddress(FooVerticle.FOO_SERVICE_ADDRESS)
-                .build(io.vertx.di.foo.FooService.class));
+                .build(io.vertx.di.foo.FooRepository.class));
     }
 
     @Override
     public void start(Future<Void> startFuture) {
-        fooService.rxCreateFoo("foobar")
+        JsonObject fooData = new JsonObject()
+                .put("id", UUID.randomUUID().toString())
+                .put("bar", "foobar");
+
+        fooRepository.rxSave(fooData)
                 .doOnSuccess(foo -> System.out.println("Saved: " + foo))
                 .map(foo -> foo.getString("id"))
-                .flatMap(fooService::rxFindFoo)
+                .flatMap(fooRepository::rxFindById)
                 .doOnSuccess(foo -> System.out.println("Found: " + foo))
                 .map(storedFoo -> storedFoo.getString("bar"))
                 .filter(bar -> bar.equals("foobar"))

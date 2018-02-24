@@ -5,28 +5,31 @@ import io.reactivex.Single;
 import io.vertx.core.Context;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import io.vertx.di.foo.Foo;
 import io.vertx.di.foo.FooModule;
-import io.vertx.di.foo.FooService;
+import io.vertx.di.foo.FooRepository;
 import io.vertx.reactivex.core.AbstractVerticle;
+
+import java.util.UUID;
 
 public class MainVerticle extends AbstractVerticle {
 
-    private FooService fooService;
+    private FooRepository fooRepository;
 
     @Override
     public void init(Vertx vertx, Context context) {
         super.init(vertx, context);
-        fooService = Guice
+        fooRepository = Guice
                 .createInjector(new FooModule())
-                .getInstance(FooService.class);
+                .getInstance(FooRepository.class);
     }
 
     @Override
-    public void start(Future<Void> startFuture) throws Exception {
-        fooService.createFoo("foobar")
+    public void start(Future<Void> startFuture) {
+        fooRepository.save(new Foo(UUID.randomUUID().toString(), "foobar"))
                 .doOnSuccess(foo -> System.out.println("Saved: " + foo))
                 .map(foo -> foo.id)
-                .flatMapMaybe(fooService::findFoo)
+                .flatMapMaybe(fooRepository::findById)
                 .doOnSuccess(foo -> System.out.println("Found: " + foo))
                 .map(storedFoo -> storedFoo.bar)
                 .filter(bar -> bar.equals("foobar"))

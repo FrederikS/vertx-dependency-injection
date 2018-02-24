@@ -15,6 +15,7 @@ subprojects {
     dependencies {
         compile group: 'io.vertx', name: 'vertx-core', version: vertxVersion
         compile group: 'io.vertx', name: 'vertx-rx-java2', version: vertxVersion
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
     }
 }
 

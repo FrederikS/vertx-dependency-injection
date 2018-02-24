@@ -12,20 +12,20 @@ public class FooVerticle extends AbstractVerticle {
 
     public static final String FOO_SERVICE_ADDRESS = "foo-service";
 
-    private FooServiceImpl fooService;
+    private FooRepository fooRepository;
     private MessageConsumer<JsonObject> binder;
 
     @Override
     public void init(Vertx vertx, Context context) {
         super.init(vertx, context);
-        fooService = new FooServiceImpl(new InMemoryFooRepository());
+        fooRepository = new InMemoryFooRepository();
     }
 
     @Override
     public void start(Future<Void> startFuture) {
         binder = new ServiceBinder(vertx.getDelegate())
                 .setAddress(FOO_SERVICE_ADDRESS)
-                .register(FooService.class, fooService);
+                .register(FooRepository.class, fooRepository);
 
         binder.completionHandler(startFuture);
     }
