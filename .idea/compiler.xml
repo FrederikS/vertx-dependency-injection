@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="dependency-injection_main" target="1.8" />
+      <module name="dependency-injection_test" target="1.8" />
+      <module name="eventbus_main" target="1.8" />
+      <module name="eventbus_test" target="1.8" />
+      <module name="guice_main" target="1.8" />
+      <module name="guice_test" target="1.8" />
+      <module name="service-proxy_main" target="1.8" />
+      <module name="service-proxy_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

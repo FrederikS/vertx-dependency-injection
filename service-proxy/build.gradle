@@ -1,0 +1,31 @@
+dependencies {
+    compile group: 'io.vertx', name: 'vertx-service-proxy', version: vertxVersion
+    compile group: 'io.vertx', name: 'vertx-service-proxy', version: vertxVersion, classifier: 'processor'
+    compileOnly group: 'io.vertx', name: 'vertx-codegen', version: vertxVersion
+}
+
+task annotationProcessing(type: JavaCompile, group: 'build') { // codegen
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.compileOnly
+    destinationDir = project.file('src/main/generated')
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "io.vertx.codegen.CodeGenProcessor",
+            "-AoutputDirectory=${project.projectDir}/src/main"
+    ]
+}
+
+compileJava {
+    targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+
+    dependsOn annotationProcessing
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += 'src/main/generated'
+        }
+    }
+}

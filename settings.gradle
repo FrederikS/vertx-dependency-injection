@@ -1,0 +1,5 @@
+rootProject.name = 'dependency-injection'
+include 'guice'
+include 'eventbus'
+include 'service-proxy'
+

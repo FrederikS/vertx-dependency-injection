@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dependency-injection.iml" filepath="$PROJECT_DIR$/.idea/modules/dependency-injection.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eventbus.iml" filepath="$PROJECT_DIR$/.idea/modules/eventbus.iml" group="eventbus" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eventbus/eventbus_main.iml" filepath="$PROJECT_DIR$/.idea/modules/eventbus/eventbus_main.iml" group="eventbus" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eventbus/eventbus_test.iml" filepath="$PROJECT_DIR$/.idea/modules/eventbus/eventbus_test.iml" group="eventbus" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/guice.iml" filepath="$PROJECT_DIR$/.idea/modules/guice.iml" group="guice" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/guice/guice_main.iml" filepath="$PROJECT_DIR$/.idea/modules/guice/guice_main.iml" group="guice" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/guice/guice_test.iml" filepath="$PROJECT_DIR$/.idea/modules/guice/guice_test.iml" group="guice" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service-proxy.iml" filepath="$PROJECT_DIR$/.idea/modules/service-proxy.iml" group="service-proxy" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service-proxy/service-proxy_main.iml" filepath="$PROJECT_DIR$/.idea/modules/service-proxy/service-proxy_main.iml" group="service-proxy" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service-proxy/service-proxy_test.iml" filepath="$PROJECT_DIR$/.idea/modules/service-proxy/service-proxy_test.iml" group="service-proxy" />
+    </modules>
+  </component>
+</project>

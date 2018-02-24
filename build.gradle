@@ -1,0 +1,21 @@
+subprojects {
+    apply plugin: 'java'
+    group 'io.vertx'
+    version '1.0-SNAPSHOT'
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        vertxVersion = '3.5.1'
+    }
+
+    dependencies {
+        compile group: 'io.vertx', name: 'vertx-core', version: vertxVersion
+        compile group: 'io.vertx', name: 'vertx-rx-java2', version: vertxVersion
+    }
+}
+
+
