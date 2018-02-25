@@ -636,4 +636,6 @@ You have to follow some restrictions like using limited types, but it isn't real
 The only limitation I found so far is that you can't stream results over the event bus but I could imagine that this will be added at some point.
 That's it - hope it helps! :)
 
-<p>**All code can be found [here](https://github.com/FrederikS/vertx-dependency-injection)**</p>
+<p>
+<strong>All code can be found <a href="https://github.com/FrederikS/vertx-dependency-injection">here</a></strong>
+</p>
