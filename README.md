@@ -531,7 +531,7 @@ public class MainVerticle extends AbstractVerticle {
 Via vertx code generation also reactive implementations can be generated that's why we see the `rxSave` and `rxFindById` here.
 At the `init` method we are build these reactive service proxy via the `ServiceProxyBuilder`.
 All direct interactions with the eventbus are isolated in the generated proxy classes.
-When taking a look into these we notice that the implementation is really similar to ours from the previous approach.
+When taking a look into these we notice that the implementation is pretty similar to ours from the previous approach.
 
 ```java
   public void handle(Message<JsonObject> msg) {
