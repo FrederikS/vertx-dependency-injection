@@ -637,5 +637,8 @@ The only limitation I found so far is that you can't stream results over the eve
 That's it - hope it helps! :)
 
 <p>
+<hr>
+<blockquote>
 <strong>All code can be found <a href="https://github.com/FrederikS/vertx-dependency-injection">here</a></strong>
+</blockquote>
 </p>
