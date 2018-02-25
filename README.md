@@ -1,21 +1,24 @@
 # You might not need Dependency Injection in a Vertx application
 
-For some time I heard/read a lot about the vertx toolkit and since I'm really a fan of reactive programming and event-driven architectures but also spending most of my time in the java world it sounds very promising to me and I decided to give it a try.
-So I started to create my first vertx application. As always I thought it can't be that hard - I will just start with a practical example and will learn how the framework/toolkit works automatically without reading the docs at all. **Really bad idea!** As vertx is really unopiniated you can write the code in any style and it can work. But you should at least follow some basic rules to profit from vertx. So my advice would be at least read the [core manual](http://vertx.io/docs/vertx-core/java/).
+For some time I heard/read a lot about the vertx toolkit and since I'm a real fan of reactive programming and event-driven architectures, but also spending most of my time in the java world, it sounded very promising to me and I decided to give it a try. So I started to create my first vertx application.
 
-At some point (still not read the docs completely), I thought about how to apply Dependency Injection when my application is going to be more complex. Hmm I have no idea - so I started to find an answer by using the search engine with search terms like 'vertx dependency injection' and so on. As results I got nothing official from the vertx team but some custom written libraries like vertx-guice. In general just a very few related results. The next naive thought was following - that seems to be one way doing it. Let's try it out.
+As always I thought it can't be that hard. I will just start with a practical example and will learn how the framework/toolkit works automatically, without reading the docs at all. **Really bad idea!** As vertx is really unopiniated, you can write the code in any style and it works. But you should at least follow some basic rules to profit from vertx. So my advice would be at least read the [core manual](http://vertx.io/docs/vertx-core/java/).
+
+At some point (still hadn't read the docs completely) I thought about how to apply Dependency Injection when my application is going to be more complex. I had absolutely no idea, so I started to find an answer by using the search engine with search terms like 'vertx dependency injection' and so on. The results - there were just very few related - I got weren't official ones from the vertx team but some custom written libraries like vertx-guice.
+That seems to be a way doing it. Let's try it out!
+
 
 ## The experiment
 
-As a example I create a little fictional project where we have some pseudo CRUD operations around a `Foo` entity.
-There is a `FooRepository` interface offering those methods. The implmentation of them can be found at the `InMemoryFooRepository` class.
-In all 3 different appraoches we will find this being the same, as our buisness logic - we only change the way how we interact with it.
+As an example I'm creating a fictional project with some pseudo CRUD operations around a `Foo` entity.
+There is a `FooRepository` interface offering those methods. The implementation of them can be found at the `InMemoryFooRepository` class.
+In all 3 different appraoches this is going to be our business logic - we only change the way of interacting with it.
 
 ## The traditional way
 
 ### Dependency Injection with Guice
 
-Let's start with some code with the described example from above. For our entity class we are using lombok to keep it clean and expressive.
+Let's start with some code and the example descripted above. For our entity class we're using lombok to keep it clean and expressive.
 
 ```java
 import lombok.Value;
@@ -27,7 +30,7 @@ public class Foo {
 }
 ```
 
-We want to have reactive implementations so we are going to use rxjava and our `FooRepository` interface is defined like this:
+We want to have reactive implementations, so we are going to use rxjava and our `FooRepository` interface is defined like this:
 
 ```java
 import io.reactivex.Maybe;
@@ -70,7 +73,7 @@ class InMemoryFooRepository implements FooRepository {
 }
 ```
 
-With Guice we create a `Module` where we define which implementation should be bound to the `FooRepository` when we're going to inject it anywhere.
+With Guice we're creating a `Module` to define which implementation should be bound to the `FooRepository` when we're going to inject it anywhere.
 Here we go:
 
 ```java
@@ -130,7 +133,7 @@ public class MainVerticle extends AbstractVerticle {
 }
 ```
 
-As usual in a vertx application Our `MainVerticle` is extending from `AbstractVerticle`. We are overriding the `init` method to get a `FooRepository` instance here. When starting the verticle we are using this instance to execute some example operations. Basically we save one Foo entity and trying to find it by id again.
+As usual in a vertx application our `MainVerticle` is extending from `AbstractVerticle`. We are overriding the `init` method to get a `FooRepository` instance here. When starting the verticle we are using this instance to execute some example operations. Basically we're saving one Foo entity and trying to find it by id again.
 Our last class is a simple `Main` class launching our `MainVerticle` out of the IDE.
 
 ```java
@@ -145,7 +148,7 @@ public class Main {
 }
 ```
 
-Okay let's get the output of our application.
+Okay, let's get the output of our application.
 
 ```shell
 Saved: Foo(id=7f4314e3-1578-44be-9135-a1e29fb9e453, bar=foobar)
@@ -162,14 +165,14 @@ Our implemenation seems to work and everything is fine. Let's go ahead.
 Whenever you'll read something about vertx you will see something like
 > The event bus is the nervous system of Vert.x
 
-and you can or should heavily use and rely on it.
+You can rely on it and should devinitely use it a much as possible.
 It supports message strategies like:
 * pub/sub messaging
 * point-to-point/request-response messaging
 
 In our case we will use the last one.
 Let's try this out.
-Here is all code wasn't changed except of removing the `@Singleton` annotation form the `InMemoryFooRepository` class.
+Here is all the code that wasn't changed except of removing the `@Singleton` annotation form the `InMemoryFooRepository` class.
 
 ```java
 import lombok.Value;
@@ -219,7 +222,7 @@ class InMemoryFooRepository implements FooRepository {
 }
 ```
 
-Of course we removed the guice `FooModule` and Instead we added a further verticle called `FooVerticle`.
+Of course we are removing the guice `FooModule` from the previous example and instead adding a further verticle called `FooVerticle`.
 
 ```java
 import io.reactivex.Single;
@@ -275,7 +278,7 @@ public class FooVerticle extends AbstractVerticle {
 }
 ```
 
-So what are we doing here? We instantiate a `InMemoryFooRepository` in the `init` method. So far so easy.
+So what are we doing here? We're instantiating a `InMemoryFooRepository` in the `init` method. So far so easy.
 When starting the verticle we register a `JsonObject` consumer on the event bus for a certain address.
 Depending on which action header is received from the incoming message we are invoking the corresponding
 repository method and sending the result by replying to the message. That's mainly it, let's start using it.
@@ -320,7 +323,7 @@ public class MainVerticle extends AbstractVerticle {
 }
 ```
 
-It looks really similar to the approach with guice. Instead of using the repository directly we are sending messages via the event bus.
+It looks really similar to the approach with guice. Instead of using the repository directly we are sending messages over the event bus.
 Therefore we have to decorate our messages with specific action headers and the payload as a `JsonObject`.
 We have a little bit more code but in this version we are completely decoupled from any implementation and any domain objects like `Foo`. That's cool!
 
@@ -352,7 +355,7 @@ public class Main {
 }
 ```
 
-In our `Main` class we deploy the `FooVerticle` before the `MainVerticle` to ensure that we don't miss any message.
+In our `Main` class we're deploying the `FooVerticle` before the `MainVerticle` to ensure that we're not missing any message.
 Here is the output.
 
 ```shell
@@ -361,12 +364,12 @@ Found: {"id":"ac571123-855b-4b2c-b9e9-059d65c273eb","bar":"foobar"}
 Saved and found foo with bar=foobar successfully.
 ```
 
-Our application is still working and works as expected!
+Our application is still working and it works as expected!
 
 ### Via vertx service proxy
 
 For the last approach we are trying out the so called service proxies which are offered as a separate module by the vertx toolkit.
-How do they work? Basically it's almost the same like the in the previous approach except of less boilerplate code by using some code generation.
+How do they work? Basically it's almost the same like those in the previous approach except we have less boilerplate code by using some code generation.
 Our `Foo` class is the only untouched piece of code.
 
 ```java
@@ -379,7 +382,7 @@ public class Foo {
 }
 ```
 
-Due to some restrictions you have to follow when using service proxies we had to change our `FooRepository` interface.
+Due to some restrictions you have to follow when using service proxies, we have to change our `FooRepository` interface.
 
 ```java
 import io.vertx.codegen.annotations.ProxyGen;
@@ -529,8 +532,8 @@ public class MainVerticle extends AbstractVerticle {
 }
 ```
 
-Via vertx code generation also reactive implementations can be generated that's why we see the `rxSave` and `rxFindById` method calls here.
-At the `init` method we are build these reactive service proxy clients via the `ServiceProxyBuilder`.
+Via vertx code generation also reactive implementations can be generated. That's why we see the `rxSave` and `rxFindById` method calls here.
+At the `init` method we are building these reactive service proxy clients via the `ServiceProxyBuilder` class.
 All direct interactions with the event bus are isolated in the generated proxy classes.
 When taking a look into these we notice that the implementation is pretty similar to ours from the previous approach.
 
@@ -584,9 +587,9 @@ When taking a look into these we notice that the implementation is pretty simila
   }
 ```
 
-Here our switch statement on the action header with the cases for each service method is.
+Here our switch statement on the action header with cases for each service method is.
 And on the client-side we can also see that the params are put into separate properties of a `JsonObject` and the action header is set, too.
-Our `Main` class is the same like before.
+Our `Main` class is the same as before.
 
 ```java
 import io.vertx.di.foo.FooVerticle;
@@ -628,11 +631,11 @@ Yes it is.
 
 ## Conclusion
 
-Let's recap - With the event bus we get a mighty instrument from the vertx toolkit we should use.
+Let's recap - With the event bus we get a mighty instrument from the vertx toolkit, which we should use.
 It's almost as easy as guice to setup, the code isn't looking more complicated and is even stronger decoupled.
 So my advice would be: In most cases you don't need a DI library within a vertx application and whenever you would create
 a guice module start creating a new verticle exposing a service on the event bus.
-You have to follow some restrictions like using limited types, but it isn't really a disadvantage since it also helps to stay decoupled and if you really need it there is the `@DataObject` annotation to rescue.
+You have to follow some restrictions like using limited types, but it isn't really a disadvantage since it also helps to stay decoupled and if you really need it, there is the `@DataObject` annotation to rescue.
 The only limitation I found so far is that you can't stream results over the event bus but I could imagine that this will be added at some point.
 That's it - hope it helps! :)
 
@@ -642,3 +645,8 @@ That's it - hope it helps! :)
 <strong>All code can be found <a href="https://github.com/FrederikS/vertx-dependency-injection">here</a></strong>
 </blockquote>
 </p>
+
+### References
+
+* http://vertx.io/docs/vertx-core/java/
+* http://vertx.io/docs/vertx-service-proxy/java/
