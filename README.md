@@ -633,4 +633,4 @@ So my advice would be in most cases you don't need a DI library within a vertx a
 a guice module start creating a new verticle exposing a service via the eventbus.
 You have to follow some restrictions like using limited types, but it isn't really a disadvantage since it also helps to stay decoupled and if you really need it there is the `@DataObject` annotation to rescue.
 The only limitation I found so far is that you can't stream results over the eventbus but I could imagine that this will come at some point.
-That's it - hope it helps! :)
+All code can be found [here](https://github.com/FrederikS/vertx-dependency-injection) and that's it - hope it helps! :)
